@@ -7,10 +7,25 @@ export class ShapeService {
   private shapesSubject = new BehaviorSubject<Shape[]>([]);
   shapes$ = this.shapesSubject.asObservable();
 
+  private insertModeSubject = new BehaviorSubject<string | null>(null);
+  insertMode$ = this.insertModeSubject.asObservable();
+
   private selectedId: string | null = null;
 
   get shapes(): Shape[] {
     return this.shapesSubject.getValue();
+  }
+
+  getInsertMode(): string | null {
+    return this.insertModeSubject.getValue();
+  }
+
+  setInsertMode(mode: 'rectangle' | 'star') {
+    this.insertModeSubject.next(mode);
+  }
+
+  cancelInsertMode() {
+    this.insertModeSubject.next(null);
   }
 
   addRectangle(x: number, y: number) {
@@ -48,10 +63,7 @@ export class ShapeService {
     this.shapesSubject.next(updated);
   }
 
-  updateShape(
-    id: string,
-    update: Partial<RectangleShape> | Partial<StarShape>
-  ) {
+  updateShape(id: string, update: Partial<RectangleShape | StarShape>) {
     const updated = this.shapes.map((shape) =>
       shape.id === id ? { ...shape, ...update } : shape
     );

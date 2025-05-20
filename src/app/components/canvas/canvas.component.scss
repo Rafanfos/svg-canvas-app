@@ -3,6 +3,7 @@
   justify-content: center;
   align-items: center;
   width: 100%;
+  position: relative;
 }
 
 svg {
@@ -11,4 +12,30 @@ svg {
   max-width: 95%;
   margin: 20px auto;
   max-height: 80%;
+
+  &.insert-mode {
+    cursor: crosshair;
+    background-color: #f0f8ff;
+  }
+}
+
+.tooltip-container {
+  pointer-events: none;
+}
+
+.tooltip-bg {
+  fill: rgba(0, 0, 0, 0.7);
+  stroke: rgba(255, 255, 255, 0.3);
+  stroke-width: 1;
+}
+
+.tooltip-text {
+  fill: white;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.tooltip-subtext {
+  fill: rgba(255, 255, 255, 0.8);
+  font-size: 12px;
 }

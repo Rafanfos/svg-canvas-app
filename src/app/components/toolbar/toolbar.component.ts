@@ -12,10 +12,10 @@ export class ToolbarComponent {
   constructor(private shapeService: ShapeService) {}
 
   addRectangle() {
-    this.shapeService.addRectangle(50, 50);
+    this.shapeService.setInsertMode('rectangle');
   }
 
   addStar() {
-    this.shapeService.addStar(150, 50);
+    this.shapeService.setInsertMode('star');
   }
 }

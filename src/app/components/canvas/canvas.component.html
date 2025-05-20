@@ -1,5 +1,12 @@
 <div class="canvas-container">
-  <svg width="100%" height="500px" style="border: 1px solid #ccc">
+  <svg
+    width="100%"
+    height="500px"
+    style="border: 1px solid #ccc"
+    (click)="onCanvasClick($event)"
+    (mousemove)="onMouseMove($event)"
+    [class.insert-mode]="insertMode$ | async"
+  >
     <ng-container *ngFor="let shape of shapes$ | async">
       <ng-container *ngIf="isRectangle(shape)">
         <rect
@@ -34,5 +41,30 @@
         />
       </ng-container>
     </ng-container>
+
+    <g
+      *ngIf="insertMode$ | async as mode"
+      class="tooltip-container"
+      [attr.transform]="
+        'translate(' + (mouseX + 15) + ',' + (mouseY + 15) + ')'
+      "
+    >
+      <rect
+        x="0"
+        y="0"
+        width="220"
+        height="50"
+        rx="5"
+        ry="5"
+        class="tooltip-bg"
+      ></rect>
+      <text x="10" y="20" class="tooltip-text">
+        Clique para adicionar
+        {{ mode === "rectangle" ? "retângulo" : "estrela" }}
+      </text>
+      <text x="10" y="38" class="tooltip-subtext">
+        Pressione ESC para cancelar
+      </text>
+    </g>
   </svg>
 </div>
