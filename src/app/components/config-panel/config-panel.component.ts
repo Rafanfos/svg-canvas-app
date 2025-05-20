@@ -1,12 +1,60 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Shape, RectangleShape, StarShape } from '../../models/shape.models';
+import { ShapeService } from '../../services/shape.service';
 
 @Component({
   selector: 'app-config-panel',
   standalone: true,
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './config-panel.component.html',
-  styleUrl: './config-panel.component.scss'
+  styleUrl: './config-panel.component.scss',
 })
 export class ConfigPanelComponent {
+  isPanelVisible = true;
 
+  get selectedShape(): Shape | undefined {
+    return this.shapeService.getSelectedShape();
+  }
+
+  constructor(private shapeService: ShapeService) {}
+
+  isRectangle(shape: Shape): shape is RectangleShape {
+    return shape.type === 'rectangle';
+  }
+
+  isStar(shape: Shape): shape is StarShape {
+    return shape.type === 'star';
+  }
+
+  updateRectangleCornerRadius(event: Event) {
+    if (!this.selectedShape || !this.isRectangle(this.selectedShape)) return;
+
+    const value = +(event.target as HTMLInputElement).value;
+    this.shapeService.updateShape(this.selectedShape.id, {
+      cornerRadius: value,
+    });
+  }
+
+  updateStarPoints(event: Event) {
+    if (!this.selectedShape || !this.isStar(this.selectedShape)) return;
+
+    const value = +(event.target as HTMLInputElement).value;
+    this.shapeService.updateShape(this.selectedShape.id, {
+      points: value,
+    });
+  }
+
+  updateStarInnerRadius(event: Event) {
+    if (!this.selectedShape || !this.isStar(this.selectedShape)) return;
+
+    const value = +(event.target as HTMLInputElement).value;
+    this.shapeService.updateShape(this.selectedShape.id, {
+      innerRadius: value,
+    });
+  }
+
+  togglePanel() {
+    this.isPanelVisible = !this.isPanelVisible;
+  }
 }

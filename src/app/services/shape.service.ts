@@ -48,7 +48,10 @@ export class ShapeService {
     this.shapesSubject.next(updated);
   }
 
-  updateShape(id: string, update: Partial<Shape>) {
+  updateShape(
+    id: string,
+    update: Partial<RectangleShape> | Partial<StarShape>
+  ) {
     const updated = this.shapes.map((shape) =>
       shape.id === id ? { ...shape, ...update } : shape
     );

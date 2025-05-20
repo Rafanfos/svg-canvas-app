@@ -1,0 +1,14 @@
+.canvas-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+svg {
+  background-color: #f9f9f9;
+  border-radius: 4px;
+  max-width: 95%;
+  margin: 20px auto;
+  max-height: 80%;
+}
