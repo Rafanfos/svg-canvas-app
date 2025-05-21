@@ -34,6 +34,8 @@ export class ShapeService {
       type: 'rectangle',
       x,
       y,
+      width: 100,
+      height: 60,
       cornerRadius: 0,
       selected: false,
     };

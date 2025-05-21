@@ -27,6 +27,39 @@
     <div class="panel-content">
       <ng-container *ngIf="selectedShape; else noSelection">
         <ng-container *ngIf="isRectangle(selectedShape)">
+          <!-- Controle de largura do retângulo -->
+          <div class="control-group">
+            <label for="rectangle-width">Largura:</label>
+            <input
+              type="range"
+              id="rectangle-width"
+              min="20"
+              max="300"
+              [value]="selectedShape.width || 100"
+              (input)="updateRectangleWidth($event)"
+            />
+            <span class="value-display"
+              >{{ selectedShape.width || 100 }}px</span
+            >
+          </div>
+
+          <!-- Controle de altura do retângulo -->
+          <div class="control-group">
+            <label for="rectangle-height">Altura:</label>
+            <input
+              type="range"
+              id="rectangle-height"
+              min="20"
+              max="200"
+              [value]="selectedShape.height || 60"
+              (input)="updateRectangleHeight($event)"
+            />
+            <span class="value-display"
+              >{{ selectedShape.height || 60 }}px</span
+            >
+          </div>
+
+          <!-- Controle de arredondamento dos cantos -->
           <div class="control-group">
             <label for="corner-radius">Arredondamento dos Cantos:</label>
             <input
@@ -42,6 +75,20 @@
         </ng-container>
 
         <ng-container *ngIf="isStar(selectedShape)">
+          <!-- Controle de tamanho da estrela -->
+          <div class="control-group">
+            <label for="star-size">Tamanho:</label>
+            <input
+              type="range"
+              id="star-size"
+              min="20"
+              max="150"
+              [value]="selectedShape.outerRadius"
+              (input)="updateStarSize($event)"
+            />
+            <span class="value-display">{{ selectedShape.outerRadius }}px</span>
+          </div>
+
           <div class="control-group">
             <label for="star-points">Número de Pontas:</label>
             <input
@@ -60,7 +107,7 @@
               type="range"
               id="star-depth"
               min="10"
-              max="40"
+              max="150"
               [value]="selectedShape.innerRadius"
               (input)="updateStarInnerRadius($event)"
             />

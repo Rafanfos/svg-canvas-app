@@ -11,6 +11,8 @@ interface Shape {
 interface RectangleShape extends Shape {
   type: 'rectangle';
   cornerRadius: number;
+  width: number;
+  height: number;
 }
 
 interface StarShape extends Shape {

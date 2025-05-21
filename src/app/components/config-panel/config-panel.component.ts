@@ -27,12 +27,46 @@ export class ConfigPanelComponent {
     return shape.type === 'star';
   }
 
+  updateRectangleWidth(event: Event) {
+    if (!this.selectedShape || !this.isRectangle(this.selectedShape)) return;
+
+    const value = +(event.target as HTMLInputElement).value;
+    this.shapeService.updateShape(this.selectedShape.id, {
+      width: value,
+    });
+  }
+
+  updateRectangleHeight(event: Event) {
+    if (!this.selectedShape || !this.isRectangle(this.selectedShape)) return;
+
+    const value = +(event.target as HTMLInputElement).value;
+    this.shapeService.updateShape(this.selectedShape.id, {
+      height: value,
+    });
+  }
+
   updateRectangleCornerRadius(event: Event) {
     if (!this.selectedShape || !this.isRectangle(this.selectedShape)) return;
 
     const value = +(event.target as HTMLInputElement).value;
     this.shapeService.updateShape(this.selectedShape.id, {
       cornerRadius: value,
+    });
+  }
+
+  updateStarSize(event: Event) {
+    if (!this.selectedShape || !this.isStar(this.selectedShape)) return;
+
+    const value = +(event.target as HTMLInputElement).value;
+    const currentOuterRadius = this.selectedShape.outerRadius;
+    const currentInnerRadius = this.selectedShape.innerRadius;
+
+    const proportion = currentInnerRadius / currentOuterRadius;
+    const newInnerRadius = Math.round(value * proportion);
+
+    this.shapeService.updateShape(this.selectedShape.id, {
+      outerRadius: value,
+      innerRadius: newInnerRadius,
     });
   }
 
@@ -49,6 +83,7 @@ export class ConfigPanelComponent {
     if (!this.selectedShape || !this.isStar(this.selectedShape)) return;
 
     const value = +(event.target as HTMLInputElement).value;
+
     this.shapeService.updateShape(this.selectedShape.id, {
       innerRadius: value,
     });
