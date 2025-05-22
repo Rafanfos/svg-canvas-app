@@ -1,11 +1,16 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Shape, RectangleShape, StarShape } from '../models/shape.models';
+import { ToastrService } from 'ngx-toastr';
 
 const STORAGE_KEY = 'canvas_shapes';
 
 @Injectable({ providedIn: 'root' })
 export class ShapeService {
+  constructor(private toastr: ToastrService) {
+    this.loadShapesFromStorage();
+  }
+
   private shapesSubject = new BehaviorSubject<Shape[]>([]);
   shapes$ = this.shapesSubject.asObservable();
 
@@ -17,22 +22,20 @@ export class ShapeService {
 
   private selectedId: string | null = null;
 
-  constructor() {
-    this.loadShapesFromStorage();
-  }
-
   private loadShapesFromStorage(): void {
     try {
-      const storedShapes = localStorage.getItem(STORAGE_KEY);
-      if (storedShapes) {
-        const shapes = JSON.parse(storedShapes) as Shape[];
-        this.shapesSubject.next(shapes);
+      if (typeof localStorage !== 'undefined') {
+        const storedShapes = localStorage.getItem(STORAGE_KEY);
+        if (storedShapes) {
+          const shapes = JSON.parse(storedShapes) as Shape[];
+          this.shapesSubject.next(shapes);
+        }
       }
     } catch (error) {
+      this.toastr.error('Erro ao carregar formas do localStorage.', 'Erro');
       console.error('Erro ao carregar formas do localStorage:', error);
     }
   }
-
   private saveShapesToStorage(shapes: Shape[]): void {
     try {
       const shapesToSave = shapes.map((shape) => ({
@@ -41,6 +44,7 @@ export class ShapeService {
       }));
       localStorage.setItem(STORAGE_KEY, JSON.stringify(shapesToSave));
     } catch (error) {
+      this.toastr.error('Erro ao salvar formas no localStorage:', 'Erro');
       console.error('Erro ao salvar formas no localStorage:', error);
     }
   }
@@ -125,6 +129,12 @@ export class ShapeService {
     const updated = this.shapes.map((shape) =>
       shape.id === id ? { ...shape, ...update } : shape
     );
+    this.shapesSubject.next(updated);
+    this.saveShapesToStorage(updated);
+  }
+
+  deleteShape(id: string) {
+    const updated = this.shapes.filter((shape) => shape.id !== id);
     this.shapesSubject.next(updated);
     this.saveShapesToStorage(updated);
   }

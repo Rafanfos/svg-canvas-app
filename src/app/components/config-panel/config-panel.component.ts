@@ -82,6 +82,12 @@ export class ConfigPanelComponent {
     });
   }
 
+  deleteShape() {
+    if (!this.selectedShape) return;
+
+    this.shapeService.deleteShape(this.selectedShape.id);
+  }
+
   startMoveMode() {
     this.shapeService.setMoveMode(true);
 

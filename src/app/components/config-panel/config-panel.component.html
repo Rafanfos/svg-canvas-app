@@ -26,7 +26,12 @@
 
     <div class="panel-content">
       <ng-container *ngIf="selectedShape; else noSelection">
-        <!-- Botão de mover forma -->
+        <div class="action-button-container">
+          <button class="action-button delete-button" (click)="deleteShape()">
+            Apagar forma
+          </button>
+        </div>
+
         <div class="action-button-container">
           <button class="action-button move-button" (click)="startMoveMode()">
             <i class="fas fa-arrows-alt"></i> Mover Forma
@@ -34,7 +39,6 @@
         </div>
 
         <ng-container *ngIf="isRectangle(selectedShape)">
-          <!-- Controle de largura do retângulo -->
           <div class="control-group">
             <label for="rectangle-width">Largura:</label>
             <input
