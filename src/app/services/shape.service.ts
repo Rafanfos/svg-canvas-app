@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Shape, RectangleShape, StarShape } from '../models/shape.models';
 
+const STORAGE_KEY = 'canvas_shapes';
+
 @Injectable({ providedIn: 'root' })
 export class ShapeService {
   private shapesSubject = new BehaviorSubject<Shape[]>([]);
@@ -14,6 +16,34 @@ export class ShapeService {
   moveMode$ = this.moveModeSubject.asObservable();
 
   private selectedId: string | null = null;
+
+  constructor() {
+    this.loadShapesFromStorage();
+  }
+
+  private loadShapesFromStorage(): void {
+    try {
+      const storedShapes = localStorage.getItem(STORAGE_KEY);
+      if (storedShapes) {
+        const shapes = JSON.parse(storedShapes) as Shape[];
+        this.shapesSubject.next(shapes);
+      }
+    } catch (error) {
+      console.error('Erro ao carregar formas do localStorage:', error);
+    }
+  }
+
+  private saveShapesToStorage(shapes: Shape[]): void {
+    try {
+      const shapesToSave = shapes.map((shape) => ({
+        ...shape,
+        selected: false,
+      }));
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(shapesToSave));
+    } catch (error) {
+      console.error('Erro ao salvar formas no localStorage:', error);
+    }
+  }
 
   get shapes(): Shape[] {
     return this.shapesSubject.getValue();
@@ -61,7 +91,9 @@ export class ShapeService {
       cornerRadius: 0,
       selected: false,
     };
-    this.shapesSubject.next([...this.shapes, shape]);
+    const updatedShapes = [...this.shapes, shape];
+    this.shapesSubject.next(updatedShapes);
+    this.saveShapesToStorage(updatedShapes);
   }
 
   addStar(x: number, y: number) {
@@ -75,7 +107,9 @@ export class ShapeService {
       innerRadius: 20,
       selected: false,
     };
-    this.shapesSubject.next([...this.shapes, shape]);
+    const updatedShapes = [...this.shapes, shape];
+    this.shapesSubject.next(updatedShapes);
+    this.saveShapesToStorage(updatedShapes);
   }
 
   selectShape(id: string) {
@@ -92,9 +126,15 @@ export class ShapeService {
       shape.id === id ? { ...shape, ...update } : shape
     );
     this.shapesSubject.next(updated);
+    this.saveShapesToStorage(updated);
   }
 
   getSelectedShape(): Shape | undefined {
     return this.shapes.find((shape) => shape.id === this.selectedId);
+  }
+
+  clearAllShapes(): void {
+    this.shapesSubject.next([]);
+    localStorage.removeItem(STORAGE_KEY);
   }
 }

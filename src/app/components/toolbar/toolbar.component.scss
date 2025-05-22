@@ -64,6 +64,15 @@
   }
 }
 
+.clear-button {
+  background-color: #e53935;
+  color: #fff;
+
+  &:hover {
+    background-color: #c62828;
+  }
+}
+
 @media (max-width: 768px) {
   .toolbar-button {
     padding: 8px 12px;

@@ -18,4 +18,8 @@ export class ToolbarComponent {
   addStar() {
     this.shapeService.setInsertMode('star');
   }
+
+  clearAllShapes(): void {
+    this.shapeService.clearAllShapes();
+  }
 }
