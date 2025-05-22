@@ -1,13 +1,12 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Shape, RectangleShape, StarShape } from '../models/shape.models';
-import { ToastrService } from 'ngx-toastr';
 
 const STORAGE_KEY = 'canvas_shapes';
 
 @Injectable({ providedIn: 'root' })
 export class ShapeService {
-  constructor(private toastr: ToastrService) {
+  constructor() {
     this.loadShapesFromStorage();
   }
 
@@ -32,7 +31,6 @@ export class ShapeService {
         }
       }
     } catch (error) {
-      this.toastr.error('Erro ao carregar formas do localStorage.', 'Erro');
       console.error('Erro ao carregar formas do localStorage:', error);
     }
   }
@@ -44,7 +42,6 @@ export class ShapeService {
       }));
       localStorage.setItem(STORAGE_KEY, JSON.stringify(shapesToSave));
     } catch (error) {
-      this.toastr.error('Erro ao salvar formas no localStorage:', 'Erro');
       console.error('Erro ao salvar formas no localStorage:', error);
     }
   }

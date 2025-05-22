@@ -8,12 +8,7 @@ import { ToastrModule } from 'ngx-toastr';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [
-    ToolbarComponent,
-    CanvasComponent,
-    ConfigPanelComponent,
-    ToastrModule,
-  ],
+  imports: [ToolbarComponent, CanvasComponent, ConfigPanelComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
