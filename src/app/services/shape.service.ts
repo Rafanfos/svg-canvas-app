@@ -10,6 +10,9 @@ export class ShapeService {
   private insertModeSubject = new BehaviorSubject<string | null>(null);
   insertMode$ = this.insertModeSubject.asObservable();
 
+  private moveModeSubject = new BehaviorSubject<boolean>(false);
+  moveMode$ = this.moveModeSubject.asObservable();
+
   private selectedId: string | null = null;
 
   get shapes(): Shape[] {
@@ -20,12 +23,31 @@ export class ShapeService {
     return this.insertModeSubject.getValue();
   }
 
+  getMoveMode(): boolean {
+    return this.moveModeSubject.getValue();
+  }
+
   setInsertMode(mode: 'rectangle' | 'star') {
     this.insertModeSubject.next(mode);
   }
 
   cancelInsertMode() {
     this.insertModeSubject.next(null);
+  }
+
+  setMoveMode(active: boolean) {
+    this.moveModeSubject.next(active);
+  }
+
+  cancelMoveMode() {
+    this.moveModeSubject.next(false);
+  }
+
+  moveSelectedShape(x: number, y: number) {
+    if (!this.selectedId) return;
+
+    this.updateShape(this.selectedId, { x, y });
+    this.cancelMoveMode();
   }
 
   addRectangle(x: number, y: number) {

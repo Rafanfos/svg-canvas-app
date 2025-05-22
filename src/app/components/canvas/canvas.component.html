@@ -6,6 +6,7 @@
     (click)="onCanvasClick($event)"
     (mousemove)="onMouseMove($event)"
     [class.insert-mode]="insertMode$ | async"
+    [class.move-mode]="moveMode$ | async"
   >
     <ng-container *ngFor="let shape of shapes$ | async">
       <ng-container *ngIf="isRectangle(shape)">
@@ -42,6 +43,7 @@
       </ng-container>
     </ng-container>
 
+    <!-- Tooltip para modo de inserção -->
     <g
       *ngIf="insertMode$ | async as mode"
       class="tooltip-container"
@@ -62,6 +64,29 @@
         Clique para adicionar
         {{ mode === "rectangle" ? "retângulo" : "estrela" }}
       </text>
+      <text x="10" y="38" class="tooltip-subtext">
+        Pressione ESC para cancelar
+      </text>
+    </g>
+
+    <!-- Tooltip para modo de movimentação -->
+    <g
+      *ngIf="moveMode$ | async"
+      class="tooltip-container"
+      [attr.transform]="
+        'translate(' + (mouseX + 15) + ',' + (mouseY + 15) + ')'
+      "
+    >
+      <rect
+        x="0"
+        y="0"
+        width="220"
+        height="50"
+        rx="5"
+        ry="5"
+        class="tooltip-bg"
+      ></rect>
+      <text x="10" y="20" class="tooltip-text">Clique para mover a forma</text>
       <text x="10" y="38" class="tooltip-subtext">
         Pressione ESC para cancelar
       </text>

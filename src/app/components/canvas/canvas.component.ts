@@ -15,16 +15,16 @@ export class CanvasComponent {
   shapes$ = this.shapeService.shapes$;
   generateStarPoints = generateStarPoints;
   insertMode$ = this.shapeService.insertMode$;
+  moveMode$ = this.shapeService.moveMode$;
 
-  // Variáveis para controlar a posição do tooltip
   mouseX = 0;
   mouseY = 0;
 
   constructor(private shapeService: ShapeService) {}
 
   onSelectShape(id: string) {
-    // Se estiver em modo de inserção, não seleciona formas
-    if (this.shapeService.getInsertMode()) return;
+    if (this.shapeService.getInsertMode() || this.shapeService.getMoveMode())
+      return;
 
     this.shapeService.selectShape(id);
   }
@@ -38,12 +38,14 @@ export class CanvasComponent {
   }
 
   @HostListener('document:keydown.escape')
-  cancelInsertMode() {
+  cancelModes() {
     this.shapeService.cancelInsertMode();
+    this.shapeService.cancelMoveMode();
   }
 
   onMouseMove(event: MouseEvent) {
-    if (!this.shapeService.getInsertMode()) return;
+    if (!this.shapeService.getInsertMode() && !this.shapeService.getMoveMode())
+      return;
 
     const svgElement = event.currentTarget as SVGElement;
     const rect = svgElement.getBoundingClientRect();
@@ -53,20 +55,25 @@ export class CanvasComponent {
 
   onCanvasClick(event: MouseEvent) {
     const insertMode = this.shapeService.getInsertMode();
-
-    if (!insertMode) return;
+    const moveMode = this.shapeService.getMoveMode();
 
     const svgElement = event.currentTarget as SVGElement;
     const rect = svgElement.getBoundingClientRect();
     const x = event.clientX - rect.left;
     const y = event.clientY - rect.top;
 
-    if (insertMode === 'rectangle') {
-      this.shapeService.addRectangle(x, y);
-    } else if (insertMode === 'star') {
-      this.shapeService.addStar(x, y);
-    }
+    if (insertMode) {
+      if (insertMode === 'rectangle') {
+        this.shapeService.addRectangle(x, y);
+      } else if (insertMode === 'star') {
+        this.shapeService.addStar(x, y);
+      }
 
-    this.shapeService.cancelInsertMode();
+      this.shapeService.cancelInsertMode();
+    } else if (moveMode) {
+      this.shapeService.moveSelectedShape(x, y);
+
+      this.shapeService.cancelMoveMode();
+    }
   }
 }
