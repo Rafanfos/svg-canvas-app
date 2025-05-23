@@ -2,6 +2,10 @@
 
 Um editor interativo para criar, configurar e manipular formas SVG em um canvas web.
 
+## Acesso Rápido
+
+**Versão em Produção**: [https://svg-canvas-app.vercel.app/](https://svg-canvas-app.vercel.app/)
+
 ## Visão Geral
 
 Esta aplicação permite aos usuários criar, personalizar e manipular formas básicas (retângulos e estrelas) em um canvas SVG. Com uma interface intuitiva e responsiva, os usuários podem adicionar formas, ajustar suas propriedades e posicioná-las livremente no canvas.
@@ -33,12 +37,17 @@ Esta aplicação permite aos usuários criar, personalizar e manipular formas b�
 
 ## Como Instalar e Executar
 
-### Pré-requisitos
+### Acesso Online
+A aplicação está disponível online em: [https://svg-canvas-app.vercel.app/](https://svg-canvas-app.vercel.app/)
+
+### Desenvolvimento Local
+
+#### Pré-requisitos
 - Node.js (versão 14.x ou superior)
 - npm (normalmente vem com o Node.js)
 - Git
 
-### Passos para Instalação
+#### Passos para Instalação
 
 1. **Clone o repositório**
    ```bash
@@ -101,6 +110,7 @@ Esta aplicação permite aos usuários criar, personalizar e manipular formas b�
 - **SVG**: Para renderização vetorial das formas
 - **RxJS**: Para gerenciamento de estado reativo
 - **LocalStorage**: Para persistência de dados no navegador
+- **Vercel**: Para hospedagem e deploy contínuo
 
 ## Estrutura do Projeto
 
