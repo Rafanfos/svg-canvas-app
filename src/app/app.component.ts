@@ -1,9 +1,7 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
 import { CanvasComponent } from './components/canvas/canvas.component';
 import { ConfigPanelComponent } from './components/config-panel/config-panel.component';
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
-
 
 @Component({
   selector: 'app-root',
