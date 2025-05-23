@@ -1,0 +1,149 @@
+<div *ngIf="selectedShape?.type" class="config-panel-container">
+  <div class="controls-panel" [class.hidden]="!isPanelVisible">
+    <div class="panel-header">
+      <h3>
+        {{
+          selectedShape
+            ? selectedShape.type === "rectangle"
+              ? "Configurações de Retângulo"
+              : "Configurações de Estrela"
+            : "Configurações"
+        }}
+      </h3>
+      <div
+        *ngIf="this.isPanelVisible"
+        class="toggle-button-off"
+        (click)="togglePanel()"
+      >
+        <i
+          class="fas"
+          [class.fa-chevron-right]="!isPanelVisible"
+          [class.fa-chevron-left]="isPanelVisible"
+          ><<</i
+        >
+      </div>
+    </div>
+
+    <div class="panel-content">
+      <ng-container *ngIf="selectedShape; else noSelection">
+        <div class="action-button-container">
+          <button class="action-button delete-button" (click)="deleteShape()">
+            Apagar forma
+          </button>
+        </div>
+
+        <div class="action-button-container">
+          <button class="action-button move-button" (click)="startMoveMode()">
+            <i class="fas fa-arrows-alt"></i> Mover Forma
+          </button>
+        </div>
+
+        <ng-container *ngIf="isRectangle(selectedShape)">
+          <div class="control-group">
+            <label for="rectangle-width">Largura:</label>
+            <input
+              type="range"
+              id="rectangle-width"
+              min="20"
+              max="300"
+              [value]="selectedShape.width || 100"
+              (input)="updateRectangleWidth($event)"
+            />
+            <span class="value-display"
+              >{{ selectedShape.width || 100 }}px</span
+            >
+          </div>
+
+          <!-- Controle de altura do retângulo -->
+          <div class="control-group">
+            <label for="rectangle-height">Altura:</label>
+            <input
+              type="range"
+              id="rectangle-height"
+              min="20"
+              max="200"
+              [value]="selectedShape.height || 60"
+              (input)="updateRectangleHeight($event)"
+            />
+            <span class="value-display"
+              >{{ selectedShape.height || 60 }}px</span
+            >
+          </div>
+
+          <div class="control-group">
+            <label for="corner-radius">Arredondamento dos Cantos:</label>
+            <input
+              type="range"
+              id="corner-radius"
+              min="0"
+              max="30"
+              [value]="selectedShape.cornerRadius"
+              (input)="updateRectangleCornerRadius($event)"
+            />
+            <span class="value-display">{{ selectedShape.cornerRadius }}</span>
+          </div>
+        </ng-container>
+
+        <ng-container *ngIf="isStar(selectedShape)">
+          <div class="control-group">
+            <label for="star-size">Tamanho:</label>
+            <input
+              type="range"
+              id="star-size"
+              min="20"
+              max="150"
+              [value]="selectedShape.outerRadius"
+              (input)="updateStarSize($event)"
+            />
+            <span class="value-display">{{ selectedShape.outerRadius }}px</span>
+          </div>
+
+          <div class="control-group">
+            <label for="star-points">Número de Pontas:</label>
+            <input
+              type="number"
+              id="star-points"
+              min="3"
+              max="20"
+              [value]="selectedShape.points"
+              (input)="updateStarPoints($event)"
+            />
+          </div>
+
+          <div class="control-group">
+            <label for="star-depth">Comprimento das Pontas:</label>
+            <input
+              type="range"
+              id="star-depth"
+              min="10"
+              max="150"
+              [value]="selectedShape.innerRadius"
+              (input)="updateStarInnerRadius($event)"
+            />
+            <span class="value-display">{{ selectedShape.innerRadius }}</span>
+          </div>
+        </ng-container>
+      </ng-container>
+
+      <ng-template #noSelection>
+        <div class="empty-state">
+          <i class="fas fa-object-group" style="font-size: 24px"></i>
+          <p>Selecione uma forma no canvas para configurá-la</p>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+
+  <div
+    *ngIf="!this.isPanelVisible"
+    class="toggle-button-on"
+    (click)="togglePanel()"
+  >
+    <i
+      class="fas"
+      [class.fa-chevron-right]="!isPanelVisible"
+      [class.fa-chevron-left]="isPanelVisible"
+      >>></i
+    >
+  </div>
+</div>
